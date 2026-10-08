@@ -1,0 +1,34 @@
+# Secrets: never commit the real .env (only .env.example)
+.env
+.env.*
+!.env.example
+
+# Course data: the database and product images stay local
+data/
+*.db
+*.sqlite
+*.sqlite3
+products/
+*.jpg
+*.jpeg
+*.png
+!output/app_check_images/*.png
+!output/app_check_images/*.jpg
+
+# Cleaned product-photo cache created by the backend
+backend/.image_cache/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Node / Vite
+node_modules/
+frontend/dist/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Customs — App Check</title>
+  <style>
+    :root { --navy: #0f2a4a; --paper: #faf7f2; --line: #e6e0d5; --ink: #1b2330; --muted: #697282; --accent: #a3742b; --ok: #2f6b45; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    main { max-width: 1040px; margin: 0 auto; padding: 48px 24px 80px; }
+    h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; color: var(--navy); margin: 0; }
+    h1 { font-size: 38px; }
+    h2 { font-size: 26px; }
+    .intro { color: var(--muted); margin: 10px 0 0; }
+    .summary { margin: 24px 0 8px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .summary li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .summary a { color: var(--navy); text-decoration: none; font-weight: 600; }
+    section { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line); }
+    .head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .pass { display: inline-block; padding: 3px 10px; border-radius: 4px; background: #e8f2ec; color: var(--ok); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+    .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+    figure { margin: 18px 0 0; }
+    figure a { display: block; max-height: 760px; overflow: auto; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+    figure img { display: block; width: 100%; height: auto; }
+    figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); }
+    figcaption strong { color: var(--ink); }
+    .proves { margin: 16px 0 0; padding: 14px 16px; background: #fff; border-left: 3px solid var(--navy); border-radius: 0 6px 6px 0; }
+    .proves b { color: var(--navy); }
+    footer { margin-top: 56px; font-size: 13px; color: var(--muted); }
+    code { font-size: 13px; background: #f1ece3; padding: 1px 5px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Homework 4 · Problem 11</p>
+  <h1>Campus Customs — App Check</h1>
+  <p class="intro">
+    Three checks run on the live site (React + Vite on <code>localhost:5173</code>, FastAPI + PydanticAI agent on <code>localhost:8000</code>,
+    model gpt-6-luna) in headless Chrome on October 7, 2026, each in a fresh guest session. Each screenshot is a full-page capture, and every
+    number in the chat was checked against <code>campus_customs.db</code>. Click a screenshot to open it at full size.
+  </p>
+
+  <ul class="summary">
+    <li><a href="#inventory">1. Chat checks an item's inventory and price</a><span class="pass">PASS</span></li>
+    <li><a href="#search-cards">2. Category question puts product cards on the page</a><span class="pass">PASS</span></li>
+    <li><a href="#alternatives">3. In-stock alternatives in the shopper's size (Problem 9)</a><span class="pass">PASS</span></li>
+  </ul>
+
+  <section id="inventory">
+    <div class="head">
+      <h2>Check 1 — Chat checks an item's inventory and price</h2>
+      <span class="pass">PASS</span>
+    </div>
+    <figure>
+      <a href="app_check_images/inventory.png" target="_blank"><img src="app_check_images/inventory.png" alt="Chat answering the Davenport College Crewneck stock and price question" /></a>
+      <figcaption>
+        <strong>Caption:</strong> Asked "Is the Davenport College Crewneck in stock in medium? How many are left, and what is the price?", the assistant
+        replies "Yes—it's in stock in medium, with only 5 left. The price is $58.00." Its expanded steps show it checked stock in M and looked up the price.
+      </figcaption>
+    </figure>
+    <p class="proves">
+      <b>What this proves:</b> the chat answers stock and price questions honestly from the database. <code>campus_customs.db</code> has exactly
+      5 units of this crewneck in size M at $58.00, and the agent used its <code>get_stock</code> and <code>get_price</code> tools rather than guessing.
+    </p>
+  </section>
+
+  <section id="search-cards">
+    <div class="head">
+      <h2>Check 2 — A category question puts product cards on the page</h2>
+      <span class="pass">PASS</span>
+    </div>
+    <figure>
+      <a href="app_check_images/search_cards.png" target="_blank"><img src="app_check_images/search_cards.png" alt="Hoodies product cards shown on the page after asking the chat" /></a>
+      <figcaption>
+        <strong>Caption:</strong> After asking "What hoodies do you have?", a "From your conversation · Hoodies" section appears at the top of the page
+        with 12 product cards (photo, name, price, short description, stock note), a "12 of 25" count, and a "See all hoodies" link.
+      </figcaption>
+    </figure>
+    <p class="proves">
+      <b>What this proves:</b> the agent's structured search results reach the website and render as product cards. All 12 cards are real hoodies
+      whose prices match the database (25 hoodies total), and clicking a card opened its product page (<code>/products/basic-hoodie-big-yale</code>).
+    </p>
+  </section>
+
+  <section id="alternatives">
+    <div class="head">
+      <h2>Check 3 — In-stock alternatives in the shopper's size (Problem 9)</h2>
+      <span class="pass">PASS</span>
+    </div>
+    <figure>
+      <a href="app_check_images/alternatives.png" target="_blank"><img src="app_check_images/alternatives.png" alt="Assistant suggesting similar hoodies in stock in size L" /></a>
+      <figcaption>
+        <strong>Caption:</strong> With "My size" set to L, a shopper on the Fencing Left Chest Hoodie page asks "Do you have this in my size?". The assistant
+        says it is sold out in L and suggests similar navy hoodies that are in stock in L; the page shows them under "Similar hoodies in L".
+      </figcaption>
+    </figure>
+    <p class="proves">
+      <b>What this proves:</b> the <code>find_alternatives</code> tool works with the shopper's saved size. The database has 0 Fencing hoodies in L, and
+      every suggestion is in stock in L (Squash 25, Crew 8, Yale Mom 25, Yale Dad 20); the steps show "Finding similar items in stock in L".
+    </p>
+  </section>
+
+  <footer>
+    Screenshots: <code>output/app_check_images/inventory.png</code>, <code>search_cards.png</code>, <code>alternatives.png</code>.
+    No browser console errors occurred during these checks.
+  </footer>
+</main>
+</body>
+</html>

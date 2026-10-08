@@ -1,0 +1,6 @@
+# Publish only the hw4/ project. The local data pack (data/), the virtual
+# environment (.venv/), and personal notes stay on this machine.
+/*
+!/.gitignore
+!/README.md
+!/hw4/
